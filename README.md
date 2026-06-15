@@ -20,8 +20,9 @@ Then users can download everything in one command:
 git clone https://github.com/AlyZei/phyloDCA_public.git
 ```
 
-If users do not want git history, they can download a single ZIP snapshot:
+If users do not want git history, they can download a single ZIP snapshot, then unzip it:
 
 ```bash
-curl -fL -o phyloDCA_public.zip https://github.com/AlyZei/phyloDCA_public/archive/refs/heads/main.zip && test -s phyloDCA_public.zip && unzip phyloDCA_public.zip
+curl -fL -o phyloDCA_public.zip https://github.com/AlyZei/phyloDCA_public/archive/refs/heads/main.zip
+unzip phyloDCA_public.zip
 ```
