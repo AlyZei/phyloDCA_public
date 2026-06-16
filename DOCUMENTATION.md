@@ -8,9 +8,9 @@ phyloDCA is a toolkit for ancestral sequence recovery using phylogenetic ancestr
 
 ## Table of Contents
 1. [User Helper Functions](#user-helper-functions)
-2. [ASR Functions](#asr-functions)
-3. [MCMC Reshuffling](#mcmc-reshuffling)
-4. [Data Loading](#data-loading)
+2. [Data Loading](#data-loading)
+3. [ASR Functions](#asr-functions)
+4. [MCMC Reshuffling](#mcmc-reshuffling) 
 5. [Troubleshooting](#troubleshooting)
 
 ---
@@ -67,6 +67,44 @@ msa, headers, fields, couplings = load_data(
 )
 print(f"Loaded {len(headers)} sequences, length {msa.shape[1]}")
 ```
+---
+
+
+## Data Loading
+
+### Module: `utils` (from existing phyloDCA)
+
+#### `read_fasta2(filename)`
+
+**Purpose:** Read FASTA file into numpy array and metadata.
+
+**Returns:**
+- `msa_array` (np.ndarray): Integer-encoded sequences [N, L]
+- `msa_dict`: Dictionary version
+- `headers` (list): Sequence names
+
+---
+
+#### `read_potts_parameters_proteins(filename)`
+
+**Purpose:** Load DCA parameters in Potts model format.
+
+**Returns:**
+- `fields` (np.ndarray): Field parameters [L, 21]
+- `couplings` (np.ndarray): Coupling parameters [L, L, 21, 21]
+
+---
+
+#### `create_MSA_profile(posteriors, cardinal)`
+
+**Purpose:** Sample sequences from posterior distribution.
+
+**Parameters:**
+- `posteriors` (np.ndarray): Posterior probabilities [L, 21]
+- `cardinal` (int): Number of sequences to sample
+
+**Returns:**
+- `MSA` (np.ndarray): Sampled sequences [cardinal, L]
 
 ---
 
@@ -272,53 +310,7 @@ print(f"Saved to: {output}")
 
 ---
 
-## Data Loading
-
-### Module: `utils` (from existing phyloDCA)
-
-#### `read_fasta2(filename)`
-
-**Purpose:** Read FASTA file into numpy array and metadata.
-
-**Returns:**
-- `msa_array` (np.ndarray): Integer-encoded sequences [N, L]
-- `msa_dict`: Dictionary version
-- `headers` (list): Sequence names
-
----
-
-#### `read_potts_parameters_proteins(filename)`
-
-**Purpose:** Load DCA parameters in Potts model format.
-
-**Returns:**
-- `fields` (np.ndarray): Field parameters [L, 21]
-- `couplings` (np.ndarray): Coupling parameters [L, L, 21, 21]
-
----
-
-#### `create_MSA_profile(posteriors, cardinal)`
-
-**Purpose:** Sample sequences from posterior distribution.
-
-**Parameters:**
-- `posteriors` (np.ndarray): Posterior probabilities [L, 21]
-- `cardinal` (int): Number of sequences to sample
-
-**Returns:**
-- `MSA` (np.ndarray): Sampled sequences [cardinal, L]
-
----
-
 ## Troubleshooting
-
-### Issue: "context_independent_entropy is not defined"
-**Solution:** The user helpers automatically patch this. If using MCMC functions directly, add:
-```python
-from utils.ci_and_cd_entropy import context_independent_entropy
-import utils.MCMC_reshuffling_torch_perfect as mcmc
-mcmc.context_independent_entropy = context_independent_entropy
-```
 
 ### Issue: "NaN values in posteriors"
 **Solution:** Handled automatically by `run_asr_pipeline()`. These typically occur at sites with no variation.
