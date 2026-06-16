@@ -9,7 +9,7 @@ from typing import Dict
 
 #from utils.shuffleFromFelsensteinDistrib import sample_site_probability
 from utils.toolsForTreesAndMSAs import create_MSA_profile, get_maximum_likelihood_sequence
-
+from utils.ci_and_cd_entropy import context_independent_entropy
 
 def sample_site_probability(MSA: np.array, type: str = 'entropy') -> np.array:
     """

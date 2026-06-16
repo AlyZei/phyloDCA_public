@@ -11,6 +11,7 @@ from typing import Tuple, Dict, List, Optional, Union
 
 from utils.utils import createFolder
 from utils.pca_tools import *
+from utils.toolsForTreesAndMSAs import read_fasta2, int_to_amino_acid_seq
 
 # Define amino acid alphabet - standard 20 amino acids + gap
 AMINO_ACID_ALPHABET_WITH_GAP = "-ACDEFGHIKLMNPQRSTVWY"  # Gap as first character

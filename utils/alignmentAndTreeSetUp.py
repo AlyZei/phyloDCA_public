@@ -4,7 +4,7 @@ import random
 from ete3 import Tree
 
 from utils.improved_sklearn_pca import compare_msas_pca
-from utils.toolsForTreesAndMSAs import buildTree, count_short_internal_branches, count_short_leaf_branches, fetchMSAFromLeafNames, gaps_count, get_eff, getMeff, int_to_amino_acid_seq, keep_unique_sequences, midpoint_reroot, plot_branch_length_distributions, plot_compared_leaf_to_root_depth, plot_distance_child_to_parent_tree, plot_hamming_vs_tree_distance, plot_histograms_together, prune_subtree, read_fasta1, remove_distance0_sequences_vectorized, remove_gapped_sequences, collapse_short_branches, collapse_only_children
+from utils.toolsForTreesAndMSAs import buildTree, count_short_internal_branches, count_short_leaf_branches, fetchMSAFromLeafNames, gaps_count, get_eff, getMeff, int_to_amino_acid_seq, keep_unique_sequences, midpoint_reroot, plot_branch_length_distributions, plot_compared_leaf_to_root_depth, plot_distance_child_to_parent_tree, plot_hamming_vs_tree_distance, plot_histograms_together, prune_subtree, read_fasta1, remove_distance0_sequences_vectorized, remove_gapped_sequences, collapse_short_branches, collapse_only_children, get_pairwise_hamming_dist
 from utils.utils import createFolder, remove_charsequence
 from utils.alignment_cleaning_cdhit import cdhit_on_alignment
 
@@ -170,7 +170,7 @@ def differentGapPercentages(unique_alignment, gaps_ensemble=[0.05, 0.1, 0.15, 0.
 # from utils.toolsForTreesAndMSAs import buildTree, collapse_only_children, collapse_short_branches, count_short_internal_branches, count_short_leaf_branches, fetchMSAFromLeafNames, gaps_count, get_eff, get_pairwise_hamming_dist, getMeff, int_to_amino_acid_seq, keep_unique_sequences, midpoint_reroot, plot_branch_length_distributions, plot_compared_leaf_to_root_depth, plot_distance_child_to_parent_tree, plot_hamming_vs_tree_distance, plot_histograms_together, prune_subtree, read_fasta1, remove_distance0_sequences, remove_gapped_sequences
 # from utils.utils import createFolder, remove_charsequence
 
-def cleanAlignmentAndTree(full_alignment, tree_folder, alignment_folder, family_name='betaLac', prune=False, leaf_number=300, length_threshold=10**(-6), save_folder='PCA/'):
+def cleanAlignmentAndTree(full_alignment, tree_save_folder, alignment_save_folder, family_name='betaLac', prune=False, leaf_number=300, length_threshold=10**(-6), save_folder='PCA/'):
     """
     - The full alignment from the DBD family is downloaded directly so its name is kept as was: "DBD_alignment.uniref90.cov80.a2m"
 	
@@ -200,22 +200,22 @@ def cleanAlignmentAndTree(full_alignment, tree_folder, alignment_folder, family_
 
     """
     # Making sure the folders exist
-    createFolder(alignment_folder)
-    createFolder(tree_folder)
+    createFolder(alignment_save_folder)
+    createFolder(tree_save_folder)
     if save_folder:
         createFolder(save_folder)
 
     # Defining the names of the alignments and the trees:
     unique_alignment=remove_charsequence(full_alignment, '.a2m')+'_nodupli.fasta'
-    cleaned_alignment=alignment_folder+family_name+'_cleaned.fasta'
-    collapsed_alignment=alignment_folder+family_name+'_collapsed.fasta'
+    cleaned_alignment=alignment_save_folder+family_name+'_cleaned.fasta'
+    collapsed_alignment=alignment_save_folder+family_name+'_collapsed.fasta'
 
-    clean_tree=tree_folder+family_name+'tree_fromcleaned.nwk'
-    midpoint_rooted_clean_tree=tree_folder+family_name+'tree_fromcleaned_midpointrooted.nwk'
-    collapsed_tree=tree_folder+family_name+'tree_collapsed_midpointrooted.nwk'
-    collapsed_no_only_children_tree=tree_folder+family_name+"tree_collapsed_noonlychild_midpointrooted.nwk"
+    clean_tree=tree_save_folder+family_name+'tree_fromcleaned.nwk'
+    midpoint_rooted_clean_tree=tree_save_folder+family_name+'tree_fromcleaned_midpointrooted.nwk'
+    collapsed_tree=tree_save_folder+family_name+'tree_collapsed_midpointrooted.nwk'
+    collapsed_no_only_children_tree=tree_save_folder+family_name+"tree_collapsed_noonlychild_midpointrooted.nwk"
     if prune:
-        pruned_tree=tree_folder+family_name+"tree_collapsed_noonlychild_midpointrooted_prunedsubtree"+str(leaf_number)+".nwk"
+        pruned_tree=tree_save_folder+family_name+"tree_collapsed_noonlychild_midpointrooted_prunedsubtree"+str(leaf_number)+".nwk"
 
     # Getting the unique sequences
     unique_sequences=keep_unique_sequences(full_alignment, unique_alignment)
@@ -280,7 +280,7 @@ def cleanAlignmentAndTree(full_alignment, tree_folder, alignment_folder, family_
 
     if prune:
         prune_subtree(collapsed_no_only_children_tree, leaf_number, pruned_tree)
-        pruned_alignment = alignment_folder + family_name + '_collapsed_prunedsubtree' + str(leaf_number) + '.fasta'
+        pruned_alignment = alignment_save_folder + family_name + '_collapsed_prunedsubtree' + str(leaf_number) + '.fasta'
         # Plot the resulting PCA
         pruned_sequences=fetchMSAFromLeafNames(pruned_tree, cleaned_alignment, save_path=pruned_alignment)
         compare_msas_pca([cleaned_alignment, pruned_alignment], ['Cleaned MSA', 'MSA from pruned tree'],

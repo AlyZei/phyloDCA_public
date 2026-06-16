@@ -5,7 +5,6 @@ import torch
 from matplotlib import pyplot as plt
 from typing import Tuple, List, Union
 
-from utils.energy_plotting_mahaut import reshape_couplings
 from utils.toolsForTreesAndMSAs import read_fasta2
 from utils.utils import generate_colors
 from utils.utils_lore import load_params
@@ -21,6 +20,30 @@ def ensure_tensor(x, dtype=None):
     if torch.is_tensor(x):
         return x.to(dtype=dtype or x.dtype, device=device or x.device)
     return torch.tensor(x, dtype=dtype, device=device)
+
+
+def reshape_couplings(couplings_original):
+    """
+    Reshape couplings from (L, q, L, q) to (L, L, q, q)
+    """
+    L1, q1, L2, q2 = couplings_original.shape
+    
+    # Verify dimensions make sense
+    if L1 != L2 or q1 != q2:
+        print(f"Warning: Unexpected dimensions: {L1}x{q1}x{L2}x{q2}")
+    
+    # Create new array with correct shape
+    couplings_reshaped = np.zeros((L1, L2, q1, q2))
+    
+    # Transfer values
+    for i in range(L1):
+        for j in range(L2):
+            for a in range(q1):
+                for b in range(q2):
+                    couplings_reshaped[i, j, a, b] = couplings_original[i, a, j, b]
+    
+    return couplings_reshaped
+
 
 
 
