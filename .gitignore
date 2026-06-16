@@ -34,3 +34,5 @@ shuffled_msa_from_posterior/*
 top_candidates/*
 consensus_sequences_betaLac/*
 
+example_usage copy.ipynb
+generate_documentation.py
