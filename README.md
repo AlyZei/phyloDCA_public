@@ -113,15 +113,6 @@ A practical workflow is:
 4. Save/export the learned fields and couplings with the adabmDCA parameter writer.
 5. Place the exported parameter file in your dataset folder, for example `data_myFamily/Parameters.dat`, and load it with `utils.PottsEnergies.read_potts_parameters_proteins()`.
 
-If the exported parameter file uses a token/numeric convention that differs from this repository, use [utils/convert_potts_params_format.py](utils/convert_potts_params_format.py) to convert it before running the phyloDCA workflow:
-
-```bash
-python -m utils.convert_potts_params_format \
-  --input data_myFamily/Parameters_adabmDCA.dat \
-  --output data_myFamily/Parameters.dat \
-  --to numeric
-```
-
 ## Citation
 
 If you use phyloDCA, please cite our preprint: https://www.biorxiv.org/content/10.64898/2026.06.08.731024v1
