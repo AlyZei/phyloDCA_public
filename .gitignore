@@ -36,3 +36,5 @@ consensus_sequences_betaLac/*
 
 example_usage copy.ipynb
 generate_documentation.py
+example_usage_simple_save.ipynb
+example_usage_simplev1.ipynb

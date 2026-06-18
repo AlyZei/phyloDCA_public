@@ -113,6 +113,10 @@ A practical workflow is:
 4. Save/export the learned fields and couplings with the adabmDCA parameter writer.
 5. Place the exported parameter file in your dataset folder, for example `data_myFamily/Parameters.dat`, and load it with `utils.PottsEnergies.read_potts_parameters_proteins()`.
 
+## Given the MSA and DCA parameters
+
+Once you have generated your own MSA and DCA parameters, simply follow the workflow of [example_usage_simple.ipynb](example_usage_simple.ipynb). It shows the user how to launch the full workflow from the provided utilities, given any MSA and DCA parameters. Simply replace the file paths to the betalactamase MSA and DCA parameters by those of your own family of interest, and run the notebook! 
+
 ## Citation
 
 If you use phyloDCA, please cite our preprint: https://www.biorxiv.org/content/10.64898/2026.06.08.731024v1
